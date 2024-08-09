@@ -13,14 +13,6 @@ const eraseColor = '#FFF';
 const shapes = []; 
 const erasedAreas = [];
 
-function getTouchPos(canvasDom, touchEvent) {
-    var rect = canvasDom.getBoundingClientRect();
-    return {
-        x: touchEvent.touches[0].clientX - rect.left,
-        y: touchEvent.touches[0].clientY - rect.top
-    };
-}
-
 canvas.addEventListener('mousedown', (e) => {
     isDrawing = true;
     points = [];
@@ -42,35 +34,6 @@ canvas.addEventListener('mouseup', () => {
         drawAllShapes(); 
     }
 });
-
-canvas.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    isDrawing = true;
-    points = [];
-    addPoint(getTouchPos(canvas, e));
-}, { passive: false }); 
-
-canvas.addEventListener('touchmove', (e) => {
-    e.preventDefault(); 
-    if (isDrawing) {
-        addPoint(getTouchPos(canvas, e));
-        drawCurrentShape();
-    }
-}, { passive: false }); 
-
-canvas.addEventListener('touchend', () => {
-    if (isDrawing) {
-        isDrawing = false;
-        shapes.push(points.slice());
-        applyEraser(); 
-        drawAllShapes(); 
-    }
-});
-
-function addPoint(e) {
-    const pos = typeof e === 'touchevent' ? getTouchPos(canvas, e) : { clientX: e.clientX, clientY: e.clientY };
-    points.push(pos);
-}
 
 function addPoint(e) {
     const rect = canvas.getBoundingClientRect();
